@@ -1,0 +1,5 @@
+Flask==2.3.2
+openai==0.27.8
+langchain==0.0.268
+numpy==1.22.3
+-e .
