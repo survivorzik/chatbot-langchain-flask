@@ -13,15 +13,22 @@ index=pinecone.Index('chatbot')
 
 def findmatch(input):
     input_em=model.encode(input).tolist()
+    
     result=index.query(input_em,top_k=2,includeMetadata=True)
+    if result['matches']==[]:
+        # index.upsert(input_em,ids=input,metadata=input)
+        return result['matches']
+    else:
+        index.upsert(input_em,ids=input,metadata=input)
+        
     return result['matches'][0]['metadata']['text']+'\n'+result['matches'][1]['metadata']['text']
 
 def query_refiner(conversation,query):
     response=openai.Completion.create(
-        model='ada:ft-personal:refined-query-2023-07-05-21-38-35',
+        model='ada',
         prompt=f"""Given the following user query and conversation log, formulate a long detailed question
         that would be the most relevant to provide the user with an 
-        answer from a knowledge base.\n\n CONVERSATION LOG: \n{conversation} \n\nQuery:{query}\n\n?
+        answer from a knowledge base and also remember their name and message them your ownself if necessary.\n\n CONVERSATION LOG: \n{conversation} \n\nQuery:{query}\n\n?
         Refined Query: """,
         temperature=0.7,
         max_tokens=256,
@@ -35,7 +42,9 @@ def query_refiner(conversation,query):
 def get_conversation_string(requests, responses):
     conversation_string=""
     for i in range(len(responses)-1):
-        conversation_string+=f"User: {requests[i]}\nBot: {responses[i]}\n"
+        conversation_string+=f"User: {requests[i]}\n"
+        conversation_string+=f"Bot: {responses[i+1]}\n"
+    print(conversation_string)
     return conversation_string    
 
 

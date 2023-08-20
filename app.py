@@ -10,11 +10,12 @@ def index():
     query=data.get('data')
     print(query)
     try:
-        chat=chatbot()
+        chat=Chatbot()
+        print(query,'in try')
         response=chat.generateresponse(query)
     except Exception as e:
         response=str(e)
-        print(response)
+        print(response,"error")
         return jsonify({"response":False,"message":response})
     return jsonify({"response":True,"message":response})
 
