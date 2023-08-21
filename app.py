@@ -4,6 +4,8 @@ import os
 from src.components.chatbot import Chatbot
 app= Flask(__name__)
 
+CORS(app)
+
 @app.route('/data',methods=["POST"])
 def index():
     data=request.get_json()
