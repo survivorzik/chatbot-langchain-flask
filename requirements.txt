@@ -9,4 +9,7 @@ pinecone-client==2.2.2
 sentence-transformers==2.2.2
 Flask-Cors==4.0.0
 python-dotenv==1.0.0
+chromadb==0.4.6
+wrapt==1.15.0
+spacy==3.6.1
 -e .

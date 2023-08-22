@@ -8,7 +8,7 @@ from langchain.prompts import (
     HumanMessagePromptTemplate,
     ChatPromptTemplate,
     MessagesPlaceholder)
-from src.utils import *
+from src.utils import Utils
 from src.exception import CustomException
 from src.logger import logging
 from dotenv.main import load_dotenv
@@ -19,7 +19,7 @@ openai_api_key=os.getenv('OPENAI_API_KEY')
 
 class Chatbot:
     def __init__(self):
-        self.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
+        self.buffer_memory=ConversationBufferWindowMemory(k=16,return_messages=True)
         self.llm=ChatOpenAI(model="gpt-3.5-turbo",openai_api_key=openai_api_key)
         self.system_msg_template=SystemMessagePromptTemplate.from_template(template="""You Are a chatbot and interact with the user.""")
         self.human_msg_template=HumanMessagePromptTemplate.from_template(template="{input}")
@@ -27,19 +27,21 @@ class Chatbot:
         self.conversation=ConversationChain(memory=self.buffer_memory,prompt=self.prompt_template,llm=self.llm,verbose=True)
         self.requests=["Hey How can i help you"]
         self.responses=[]
+        self.utils=Utils()
         
     def generateresponse(self,input):
         print("input",input)
         if len(self.requests) > 0:
             print("input1",input)
-            conversation_string=get_conversation_string(requests=self.requests,responses=self.responses)
-            refined_query=query_refiner(conversation_string,input)
+            conversation_string=self.utils.get_conversation_string(requests=self.requests,responses=self.responses)
+            refined_query=self.utils.query_refiner(conversation_string,input)
+            context=self.utils.findmatch(refined_query)
             print(refined_query,'refined_query')
         else:
             print('in else')
             refined_query=input
         print('context')
-        context=findmatch(refined_query)
+        self.utils.add_text(input)
         response=self.conversation.predict(input=f"""Context:\n {context} \n\n Query:\n{input} """)
         self.requests.append(input)
         self.responses.append(response)

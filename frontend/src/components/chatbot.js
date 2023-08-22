@@ -51,7 +51,7 @@ const preChat= [...chatLog, { user: 'human', message: myinput }]
           setInput("")
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/data', {
+      const response = await axios.post('http://192.168.0.24:5000/data', {
         data:myinput
       });
       console.log(...preChat,"....chatlog")

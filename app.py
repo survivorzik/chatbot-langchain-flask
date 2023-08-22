@@ -6,6 +6,20 @@ app= Flask(__name__)
 
 CORS(app)
 
+@app.route('/',methods=["GET"])
+def proper():
+    input="User has not replied or is away kindly message them."
+    try:
+        chat=Chatbot()
+        result=chat.generateresponse(input)
+    except Exception as e:
+        result=str(e)
+        return jsonify({"response":False,"message":result})
+    return jsonify({"response":True,"message":result})
+        
+        
+
+
 @app.route('/data',methods=["POST"])
 def index():
     data=request.get_json()
