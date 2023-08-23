@@ -6,6 +6,7 @@ I. For the Backend
     c.Activate the virtual environment by running command: conda activate venv/
   3. Now install the dependencies by running command in your activated Conda terminal: pip install -r requirements.txt (note that you must have Visual Studio C++ Build tool for install ChromaDB or download it from https://visualstudio.microsoft.com/downloads/?q=build+tools and Select the package Setup Development for C++.)
   4. After all the Dependencies are installed run app.py in your python activate terminal by command: python app.py.
+     
 II. For the FrontEnd
   1. You must have Node.Js package installed in your system (or Download Node package from https://nodejs.org/en/download ).
   2. In the root directory of the cloned repository.
