@@ -18,8 +18,9 @@ Welcome to the Awesome ChatBot project! This repository houses the code for a po
    pip install -r requirements.txt
    ```
    Note: You'll need the Visual Studio C++ Build Tool to install ChromaDB. If not already installed, you can get it from [Visual Studio Downloads](https://visualstudio.microsoft.com/downloads/?q=build+tools). Choose the "Setup Development for C++" package.
+    Note: You'll need the RUST Compiler to install SentenceTransformers. If not already installed, you can get it from [Visual Studio Downloads](https://visualstudio.microsoft.com/downloads/?q=build+tools](https://rustup.rs/)). 
 
-4. **Run the Backend:** Once dependencies are installed, run the backend server:
+5. **Run the Backend:** Once dependencies are installed, run the backend server:
    ```bash
    python app.py
    ```
