@@ -1,0 +1,1 @@
+OPENAI_API_KEY="Enter here your OPENAI API KEY"
