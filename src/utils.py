@@ -1,4 +1,5 @@
 from langchain.embeddings.openai import OpenAIEmbeddings
+from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import SentenceTransformersTokenTextSplitter as ss
 from langchain.vectorstores.chroma import Chroma
 
