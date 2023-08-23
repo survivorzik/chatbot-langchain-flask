@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 
 //Styled components
@@ -34,6 +34,15 @@ function Chatbot() {
     user: 'bot', 
     message: 'Hi there! I\'m a Chatbot, ask me anything.'
   }]);
+const [idleTimer,setIdleTimer]=useState(null);
+useEffect(()=>{
+  setIdleTimer(setTimeout(handleIdle,60000));
+  return ()=>{
+    clearTimeout(idleTimer);
+  }
+},[]);
+
+
   const [input,setInput]=useState("")
   const handleKeyDown = async (e) => {
     if (e.keyCode === 13) {
@@ -44,6 +53,8 @@ function Chatbot() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    clearTimeout(idleTimer)
+    setIdleTimer(setTimeout(handleIdle,120000))
     const myinput = input
     setChatLog([...chatLog, { user: 'human', message: myinput }]);
 const preChat= [...chatLog, { user: 'human', message: myinput }]
@@ -51,7 +62,7 @@ const preChat= [...chatLog, { user: 'human', message: myinput }]
           setInput("")
 
     try {
-      const response = await axios.post('http://localhost:5000/data', {
+      const response = await axios.post('http://192.168.0.24:5000/data', {
         data:myinput
       });
       console.log(...preChat,"....chatlog")
@@ -61,6 +72,15 @@ const preChat= [...chatLog, { user: 'human', message: myinput }]
     } catch(err) {
       setChatLog([...chatLog, { user: 'bot', message: 'Sorry, something went wrong.' }]);
     }
+  }
+  const handleChange=()=>{
+    clearTimeout(idleTimer)
+    setIdleTimer(setTimeout(handleIdle,120000));
+  }
+  const handleIdle=async()=>{
+    const response=await axios.get('http://localhost:5000/');
+    setChatLog([...chatLog, { user: 'bot', message: response.data.message }]);
+
   }
   
 
