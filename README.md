@@ -1,4 +1,4 @@
-# Langchain ChatBot Project using Flask-ChromaDB-Langchain-OpenAI
+# Langchain ChatBot Project using Flask-ChromaDB-Langchain-OpenAI-React.JS
 
 Welcome to the Awesome ChatBot project! This repository houses the code for a powerful chatbot with an interactive user interface. By following the steps below, you'll have the backend and frontend components up and running in no time.
 
