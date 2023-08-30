@@ -47,6 +47,8 @@ class Chatbot:
         self.responses.append(response)
         print(response)
         return response            
-        
+    
+    def generatesummary():
+        pass
     
     
