@@ -24,6 +24,7 @@ def proper():
     return jsonify({"response":True,"message":result})
         
 def generate():
+    response=""
     while True:
         user=input("Hey Interact with me I am A Chatbot")
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -35,7 +36,7 @@ def generate():
                 logging.info(f"Chatbot initialized with user query={user}")
                 # print(query,'query')
                 response=chat.generateresponse(user)
-                # print('Response')
+                print(response)
                 logging.info(response)
             except Exception as e:
                 raise CustomException(e,sys)
