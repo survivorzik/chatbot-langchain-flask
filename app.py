@@ -1,38 +1,64 @@
 from flask import Flask,request,render_template,jsonify
 from flask_cors import CORS
 import os
+import sys
 from src.components.chatbot import Chatbot
-app= Flask(__name__)
+from src.logger import logging
+from src.exception import CustomException
 
+
+app= Flask(__name__)
 CORS(app)
 
 @app.route('/',methods=["GET"])
 def proper():
     input="User has not replied or is away kindly message them."
     try:
+        logging.info("User has not replied or is away kindly message them.")
         chat=Chatbot()
         result=chat.generateresponse(input)
+        logging.info(f"Response from User {result}")
     except Exception as e:
-        result=str(e)
-        return jsonify({"response":False,"message":result})
+        raise CustomException(e,sys)
+        return jsonify({"response":False,"message":str(e)})
     return jsonify({"response":True,"message":result})
         
+def generate():
+    while True:
+        user=input("Hey Interact with me I am A Chatbot")
+        if user=='q':
+            break
+        else:
+            try:
+                chat=Chatbot()
+                logging.info('Chatbot initialized')
+                # print(query,'query')
+                response=chat.generateresponse(user)
+                # print('Response')
+                logging.info(response)
+            except Exception as e:
+                raise CustomException(e,sys)
+                logging.info(f"{str(e)}")
         
+            
 
 
 @app.route('/data',methods=["POST"])
 def index():
     data=request.get_json()
     query=data.get('data')
-    print(query)
+    logging.info(query)
     try:
         chat=Chatbot()
-        print(query,'in try')
+        logging.info('Chatbot initialized')
+        # print(query,'query')
+        
         response=chat.generateresponse(query)
+        logging.info(response)
     except Exception as e:
-        response=str(e)
-        print(response,"error")
-        return jsonify({"response":False,"message":response})
+        raise CustomException(e,sys)
+        logging.info(f"{str(e)}")
+        return jsonify({"response":False,"message":str(e)})
     return jsonify({"response":True,"message":response})
 
 if __name__ == '__main__':

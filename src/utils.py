@@ -26,14 +26,13 @@ class Utils:
         self.vectorStore.add_texts([input])
 
     def findmatch(self,input):
-        result=self.vectorStore.similarity_search(query=input,k=2)
+        result=self.vectorStore.similarity_search(query=input)
         if result==[]:
             return result
         else:
             response=""
             for i in range (len(result)):
                 response+=result[i].page_content+" "
-                
             return response
 
     def query_refiner(self,conversation,query):
