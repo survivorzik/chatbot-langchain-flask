@@ -2,7 +2,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import SentenceTransformersTokenTextSplitter as ss
 from langchain.vectorstores.chroma import Chroma
-
+from src.logger import logging
 import openai
 from dotenv.main import load_dotenv
 import os
@@ -56,7 +56,8 @@ class Utils:
         for i in range(len(responses)-1):
             conversation_string+=f"User: {requests[i]}\n"
             conversation_string+=f"Bot: {responses[i+1]}\n"
-        print(conversation_string)
+        # print(conversation_string)
+        logging.info(conversation_string)
         return conversation_string    
 
 

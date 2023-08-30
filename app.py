@@ -26,12 +26,13 @@ def proper():
 def generate():
     while True:
         user=input("Hey Interact with me I am A Chatbot")
+        os.system('cls' if os.name == 'nt' else 'clear')
         if user=='q':
             break
         else:
             try:
                 chat=Chatbot()
-                logging.info('Chatbot initialized')
+                logging.info(f"Chatbot initialized with user query={user}")
                 # print(query,'query')
                 response=chat.generateresponse(user)
                 # print('Response')
@@ -39,6 +40,7 @@ def generate():
             except Exception as e:
                 raise CustomException(e,sys)
                 logging.info(f"{str(e)}")
+        
         
             
 
