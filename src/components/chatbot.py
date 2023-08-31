@@ -2,13 +2,14 @@ import os
 import sys
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
-from langchain.chains.conversation.memory import ConversationBufferWindowMemory,ConversationSummaryMemory
+from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.prompts import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
     ChatPromptTemplate,
     MessagesPlaceholder)
 from src.utils import Utils
+from langchain.chains.summarize import load_summarize_chain
 from src.exception import CustomException
 from src.logger import logging
 from dotenv.main import load_dotenv
@@ -25,7 +26,8 @@ class Chatbot:
         self.system_msg_template=SystemMessagePromptTemplate.from_template(template="""You Are a chatbot and interact with the user.""")
         self.human_msg_template=HumanMessagePromptTemplate.from_template(template="{input}")
         self.prompt_template=ChatPromptTemplate.from_messages([self.system_msg_template,MessagesPlaceholder(variable_name='history'),self.human_msg_template])
-        self.conversation=ConversationChain(memory=self.buffer_memory,prompt=self.prompt_template,llm=self.llm,verbose=True)
+        self.conversation=ConversationChain(memory=self.buffer_memory,prompt=self.prompt_template,llm=self.llm,verbose=False)
+        self.chain=load_summarize_chain(llm=self.llm, chain_type="map_reduce")
         self.requests=["Hey How can i help you"]
         self.responses=[]
         self.utils=Utils()
@@ -49,8 +51,15 @@ class Chatbot:
         # print(response)
         return response            
     
-    def generatesummary():
-        pass
+    def generatesummary(self):
+        docs=self.utils.get_all_docs()
+        global_summary = ""
+        for doc in docs:
+            global_summary =  self.chain([global_summary, doc])
+        
+        return global_summary
+        
+        
         
     
     

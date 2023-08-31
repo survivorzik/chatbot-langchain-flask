@@ -17,7 +17,9 @@ class Utils:
         openai_api_key=openai.api_key,
         model='text-embedding-ada-002')
         # self.
-        self.vectorStore=Chroma('langchain_store',self.model)
+        self.vectorStore=Chroma('langchain_store',self.model,persist_directory='./database')
+        self.vectorStore.persist()
+        
         
         
     def add_text(self,input):
@@ -59,7 +61,11 @@ class Utils:
         # print(conversation_string)
         logging.info(conversation_string)
         return conversation_string    
-
-
+    
+    def get_all_docs(self):
+        db=self.vectorStore.get()
+        conversation=db['documents']
+        return conversation
+         
 
 
