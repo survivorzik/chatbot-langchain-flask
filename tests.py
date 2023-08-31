@@ -24,8 +24,9 @@ class TestApp(unittest.TestCase):
         
         data = {'data': test_input}
         response = self.client.post(f'{self.baseurl}/data', json=data)
-        data=response.get('data')
-        logging.info(str(data))
+        # data=response.get('data')
+        # logging.info(str(data))
+        logging.info(str(response))
         self.assertEqual(response.json['message'], test_response)
         
     def test_invalid_json(self):
