@@ -2,6 +2,7 @@ import os
 import sys
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
+from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.prompts import (
     SystemMessagePromptTemplate,
@@ -9,6 +10,7 @@ from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder)
 from src.utils import Utils
+from langchain.docstore.document import Document
 from langchain.chains.summarize import load_summarize_chain
 from src.exception import CustomException
 from src.logger import logging
@@ -27,7 +29,7 @@ class Chatbot:
         self.human_msg_template=HumanMessagePromptTemplate.from_template(template="{input}")
         self.prompt_template=ChatPromptTemplate.from_messages([self.system_msg_template,MessagesPlaceholder(variable_name='history'),self.human_msg_template])
         self.conversation=ConversationChain(memory=self.buffer_memory,prompt=self.prompt_template,llm=self.llm,verbose=False)
-        self.chain=load_summarize_chain(llm=self.llm, chain_type="map_reduce")
+        self.chain=load_summarize_chain(llm=self.llm, chain_type="stuff")
         self.requests=["Hey How can i help you"]
         self.responses=[]
         self.utils=Utils()
@@ -53,10 +55,11 @@ class Chatbot:
     
     def generatesummary(self):
         docs=self.utils.get_all_docs()
-        global_summary = ""
-        for doc in docs:
-            global_summary =  self.chain([global_summary, doc])
+        # splitter=CharacterTextSplitter()
+        # texts=splitter.split_documents(docs)
+        doc=[Document(page_content=t) for t in docs]
         
+        global_summary =  self.chain.run(doc)
         return global_summary
         
         
