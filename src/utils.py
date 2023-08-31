@@ -66,6 +66,3 @@ class Utils:
         db=self.vectorStore.get()
         conversation=db['documents']
         return conversation
-         
-
-
