@@ -24,7 +24,7 @@ def proper():
     return jsonify({"response":True,"message":result})
         
         
-@app.route('/summarize',methods=['GET'])
+# @app.route('/summarize',methods=['GET'])
 def generate():
     response=""
     while True:
